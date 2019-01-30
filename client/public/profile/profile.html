@@ -1,0 +1,414 @@
+
+<section class="profile">
+
+  <form class="login-form">
+    <label for=""
+           class="label">
+      Язык
+    </label>
+    <input type="text" 
+           placeholder=". . . " 
+           data-ng-model="language" 
+           class="login-form__item" 
+           required
+           autofocus="">
+    <label for=""
+           class="label">
+      Город
+    </label>
+    <input type="text" 
+           placeholder=". . ." 
+           data-ng-model="location" 
+           class="login-form__item"
+           required>
+    <div class="line"></div>
+
+    <div class="form-checkbox checkbox-first">
+      <input type="checkbox" 
+             ng-model="checkboxModel.value1"
+             class="login-form__checkbox">
+      <label class="login-form__label">github</label>
+    </div>
+      
+    <div class="form-checkbox">  
+      <input type="checkbox" 
+             ng-model="checkboxModel.value2"
+             class="login-form__checkbox">
+      <label class="login-form__label">fl.ru</label>
+    </div>
+
+    <div class="form-checkbox">
+      <input type="checkbox" 
+             ng-model="checkboxModel.value3"
+             class="login-form__checkbox">
+      <label class="login-form__label">upwork.com</label>             
+    </div>
+
+    <div class="line"></div>
+
+    <button type="button" 
+            data-ng-click="search(language, location, checkboxModel)"
+            class="login-form__button">
+      Поиск
+    </button>
+  </form>
+
+  <!-- Main -->
+  <div class="main">
+    <div class="loader-contrainer"
+         data-ng-if="loading == true">
+      <div class="loader"></div>
+    </div>
+
+    <!-- Users list begin -->
+    <ul class="searchpost" 
+        data-ng-if="users !== null">
+      <li ng-repeat="user in users"
+          class="tape-list__item">
+
+        <a data-ng-href="{{user.nickUrl}}"
+           class="user-photo-link"
+           target="_blank">
+          <div class="tape-list__item-left">
+            <img data-ng-if="user.photo" 
+                 data-ng-src="{{user.photo}}" 
+                 alt="Картинка поста"
+                 class="tape-list__iamge">
+            <img data-ng-if="!user.photo"
+                 src="./../resources/img/default_book.jpg" 
+                 alt="стандартная картинка книги"
+                 class="tape-list__iamge">
+          </div>
+        </a>
+
+        <div class="tape-list__item-right">
+            <div class="tape-list__item-top"
+                 data-ng-hide="showEditModalFlag == true && editBookId == book._id">
+
+              <label class="tape-list__item-label">
+                Имя
+              </label>
+              <span class="tape-list__author">
+                {{user.name}}
+              </span>
+              <!-- <label class="tape-list__item-label">
+                Компания
+              </label>
+              <span data-ng-if="user.company"
+                    class="tape-list__author">
+                {{user.company}}
+              </span> -->
+              <label class="tape-list__item-label">
+                Город
+              </label>
+              <span class="tape-list__author">
+                {{user.location}}
+              </span>
+              <label class="tape-list__item-label">
+               Аккаунт
+              </label>
+              <span class="tape-list__author">
+                <a data-ng-href="{{user.nickUrl}}"
+                   target="_blank">
+                  {{user.nickUrl.split('/')[2]}}
+                </a>
+              </span>
+            </div>
+
+        </div>
+
+      </li>
+    </ul> 
+    <!-- Users list end -->
+  </div>
+
+</section>
+
+
+<style>
+  .profile {
+    display: flex;
+    width: 75%;
+    padding-left: 24px;
+    padding-top: 24px;
+    background: #ffffff;
+  }
+  .main {
+    padding-left: 8px;    
+    width: 75%;
+  }
+  .line { 
+    display: block;
+    width: 100%;
+    margin-top: 24px;
+    margin-bottom: 16px;
+    margin-left: auto;
+    margin-right: auto;
+    border-style: inset;
+    border-width: 1px;
+    border-color: rgba(0,0,0,.3);
+  } 
+  .login-form {
+    background: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-self: flex-start;
+    width: 25%;
+  }
+  .login-form__item {
+    padding: 4px 8px;
+    font-size: 16px;
+    border: 2px solid gray;
+    border-radius: 5px;
+    width: 100%;
+  }
+  .label {
+    font-size: 18px;
+    color: #9c9c9c;
+    margin-top: 8px;
+    margin-bottom: 2px;
+  }
+  .form-checkbox {
+    display: flex;
+    align-items: center;
+  }
+  .login-form__label {
+    display: inline-block;
+    padding: 8px;
+    font-size: 16px;
+  }
+  .checkbox-first {
+    margin-top: 0px; 
+  }
+  .login-form__checkbox {
+    width: 24px;
+    height: 24px;
+    margin: 8px 0px;
+  }
+  .login-form__button {
+    padding: 8px 16px;
+    margin-top: 16px;
+    font-size: 18px;
+    width: 100%;
+    border-radius: 5px;
+    background: white;
+    color: #2a5885;
+    border: 1px solid gray; 
+  }
+  .login-form__button:hover {
+    opacity: 0.7;
+    cursor: pointer;
+  }
+  .blue {
+    color: #2a5885;
+  }
+
+  .user-info {
+    display: flex;
+  }
+  .user-info-flex {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .user-photo-link {
+    display: block;
+  }
+  .image-wrapper {
+    width: 192px;
+    height: 192px;
+    padding: 8px;
+  }
+  .user-info__photo {
+    object-fit: cover;
+    width: 176px;
+    height: 176px;
+    border-radius: 50%;
+  }
+  .user-info__buttons {
+    display: flex;
+    flex-direction: column;
+  }
+  .user-info__input {
+    width: 32px;
+    height: 0;
+    background: #2a5885;
+    border-top: 30px solid #2a5885;
+    border-radius: 10px;
+    cursor: pointer;
+  }
+  .user-info__input:hover {
+    opacity: 0.7;
+  }
+  .user-info__save  {
+    padding: 8px 16px;
+    background: #2a5885;
+    color: #ffffff;
+    cursor: pointer;
+  }
+  .user-info__save:hover {
+    opacity: 0.7;
+  }
+  .user-info__data {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-left: 16px;
+    width: 100%;
+  }
+  .user-info__data-label {
+    color: #9c9c9c;
+    font-size: 16px;
+    margin-top: 24px;
+    margin-bottom: 8px;
+    margin-left: 40%;
+  }
+  .user-info__name {
+    font-size: 20px;
+    margin-left: 40%;
+  }
+  .user-info__mail {
+    font-size: 20px; 
+    margin-left: 40%;
+  }
+  
+  .searchpost__item {
+    padding-left: 16px;
+  }
+  .searchpost__image {
+    object-fit: cover;
+    width: 128px;
+    height: 128px; 
+  }
+  .tape-list {
+    width: 66%;
+    margin: 0px auto 20px auto;
+  }
+  .tape-list__item {
+    display: flex;
+    align-items: center;
+    /*justify-content: space-around;*/
+    background: #ffffff;
+    border: 1px solid #c1c1c1;
+    border-top: 1px solid #c1c1c1;
+    border-bottom: 1px solid #c1c1c1;
+  }
+  .tape-list__item-left {
+    width : 128px;
+    display: inline-block;
+    margin: 0 16px;
+  }
+  .tape-list__iamge {
+    object-fit: cover;
+    width: 96px;
+    height: 96px;
+    border: 1px solid #000;
+    border-radius: 5px;
+  }
+  .tape-list__item-right {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    min-height: 176px;
+    padding: 12px 0;
+    margin-left: 16px;
+    width: 100%;
+  }
+  .tape-list__item-top {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .tape-list__item-label {
+    color: #9c9c9c;
+    font-size: 14px;
+    margin-top: 8px;
+    margin-bottom: 2px;
+  }
+  .tape-list__author {
+    font-weight: bold;
+    padding-left: 10px;
+    color: #2a5885;
+  }
+  .tape-list__writer {
+    
+  }
+  .tape-list__content {
+    border-top   : 1px solid #9c9c9c;
+    border-bottom: 1px solid #9c9c9c;
+    padding: 8px 16px;
+    margin: 8px 0;
+    display: block;
+    width: 90%;
+  }
+  .tape-list__item-bottom {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 12px;
+    margin-right: 10%;
+  }
+  .tape-list__item-edit {
+    display: flex;
+    flex-direction: column;
+  }
+  .item-edit__bottom {
+    display: flex;
+    justify-content: flex-end;
+    margin-right: 20%;
+  }
+  .item-edit__input {
+    border: 1px solid black;
+    padding: 8px 16px;
+  }
+  .item-edit__text {
+    border: 1px solid black;
+    padding: 8px 16px;
+    width: 80%; 
+  }
+  .item-edit__file {
+    margin-top: 6px;
+    width: 92px;
+    height: 0;
+    border-top: 32px solid #2a5885;
+
+  }
+  .item-edit__file:hover {
+    cursor: pointer;
+    opacity: 0.7;
+  }
+  .item-add-main {
+    margin-left: 192px;
+    border-bottom: 1px solid #c1c1c1;
+    margin-bottom: 24px;
+  }
+  .item-add {
+    padding: 0 16px;
+  }
+  .item-add__bottom {
+    display: flex;
+    justify-content: flex-end;
+    margin-right: 10%;
+    margin-bottom: 24px;
+  }
+
+  .loader-contrainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100px;
+  }
+  .loader {
+    border: 8px solid #c3c3c3; /* Light grey */
+    border-top: 8px solid #3498db; /* Blue */
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    animation: spin 2s linear infinite;
+  }
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+</style>
